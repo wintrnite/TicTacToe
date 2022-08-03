@@ -1,26 +1,25 @@
 package main
 
-import "fmt"
+import (
+	"log"
+	"ticTacToe/entities"
+	"ticTacToe/services"
+)
 
 func main() {
-
-	//x, y, err := services.ReadCoordinates()
-	//if err != nil {
-	//	log.Fatal(err)
-	//}
-	//fmt.Println(x, y)
-	////moveChoice, err := services.ReadMoveChoice()
-	////if err != nil {
-	////	log.Fatal(err)
-	////}
-	//field := entities.NewField(x, y)
-	//fmt.Println(field)
-	//player := entities.NewPlayer(moveChoice)
-	//gameManager := NewGameManager(player)
-	//gameManager.StartNewGame()
-	var a rune
-	_, err := fmt.Scan(&a)
+	x, y, err := services.ReadFieldSize()
 	if err != nil {
+		log.Fatal(err)
 	}
-	print(string(a))
+	field := entities.NewField(x, y)
+	playerMove, err := services.ReadMoveChoice()
+	if err != nil {
+		log.Fatal(err)
+	}
+	player := entities.NewPlayer(playerMove)
+	gm := services.NewGameManager(player, field, x, y)
+	err = gm.PlayGame()
+	if err != nil {
+		log.Fatal(err)
+	}
 }
